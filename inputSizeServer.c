@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
 	struct sockaddr_in serv_addr;
 	char sendBuffer[1024];
 	time_t ticks;
+
 //lets begin by creating the socket
 	listenfd = socket(AF_INET , SOCK_STREAM , 0);
 	if (listenfd == -1)
@@ -36,7 +37,8 @@ int main(int argc, char *argv[])
 	
 	memset(&serv_addr, '0', sizeof(serv_addr));
 	memset(sendBuffer, '0', sizeof(sendBuffer));
-	
+
+//bind socket to server
 	//svr socket address internet family is set to address family internetwork (UDP,TCP,etc.)
 	serv_addr.sin_family = AF_INET;
 	//svr socket internet address is set to any host address, in network byte order
@@ -44,11 +46,25 @@ int main(int argc, char *argv[])
 	//svr socket address internet port is set to port 5000 in network byte order
 	serv_addr.sin_port = htons(5000);
 
-//next we bind the socket
 //lets begin listening for connections
+	//give the value stored in the structure given by serv_addr to the socket
+	bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+	//listen on socket for up to 2 client connections
+	listen(listenfd, 2);
+
 //ok, lets establish a connection
+	while(1)
+	{
+		connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
 //lets stream some data
-//time to close the stream
+	//take input from stream	
+	//write input to file
+//time to close the connection
+		close(connfd);
+		sleep(1);
+	}
+
+
 //lets release the datastructures
 
 
